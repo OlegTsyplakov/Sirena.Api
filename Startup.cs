@@ -46,7 +46,7 @@ namespace Sirena.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            //app.UseMiddleware<ValidationExceptionMiddleware>();
+            app.UseMiddleware<ValidationExceptionMiddleware>();
             app.UseMvc();
             app.UseOpenApi();
             app.UseSwaggerUi3();     
