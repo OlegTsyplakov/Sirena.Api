@@ -13,7 +13,9 @@ namespace Sirena.Api.Helpers
         public static double CalculateKilometers(Airport origin, Airport destination)
         {
 
-            return Math.Acos((Math.Sin(ConvertDegreesToRadians(origin.Latitude.Value)) * Math.Sin(ConvertDegreesToRadians(destination.Latitude.Value))) + (Math.Cos(ConvertDegreesToRadians(origin.Latitude.Value)) * Math.Cos(ConvertDegreesToRadians(destination.Latitude.Value))) * (Math.Cos(ConvertDegreesToRadians(destination.Longitude.Value) - ConvertDegreesToRadians(origin.Longitude.Value)))) * 6371;
+            return Math.Acos((Math.Sin(ConvertDegreesToRadians(origin.Latitude.Value)) * Math.Sin(ConvertDegreesToRadians(destination.Latitude.Value))) + 
+                (Math.Cos(ConvertDegreesToRadians(origin.Latitude.Value)) * Math.Cos(ConvertDegreesToRadians(destination.Latitude.Value))) * 
+                (Math.Cos(ConvertDegreesToRadians(destination.Longitude.Value) - ConvertDegreesToRadians(origin.Longitude.Value)))) * 6371;
         }
         public static double ConvertDegreesToRadians(double degrees)
         {

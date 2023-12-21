@@ -9,8 +9,11 @@ using System.Threading.Tasks;
 
 namespace Sirena.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/")]
+
+
     public class RequestController : ControllerBase
     {
         private readonly IRequestService _requestService;
