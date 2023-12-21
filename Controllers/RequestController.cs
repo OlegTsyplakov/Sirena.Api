@@ -1,12 +1,10 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Sirena.Api.Contracts.Requests;
 using Sirena.Api.Contracts.Responses;
 using Sirena.Api.Domain;
 using Sirena.Api.Domain.Services;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Sirena.Api.Controllers
@@ -28,7 +26,6 @@ namespace Sirena.Api.Controllers
         }
 
 
-        //[HttpPost("airport")]
         [HttpGet("airport/{code}")]
         public async Task<Airport> Airport(string code)
         {
