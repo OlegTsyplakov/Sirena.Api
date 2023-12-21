@@ -34,7 +34,7 @@ namespace Sirena.Api.Validation
 
                 string jsonStr = JsonConvert.SerializeObject(validationFailureResponse);
 
-
+                context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(jsonStr);
             }
         }
