@@ -37,9 +37,9 @@ namespace Sirena.Api.Services
             {
                 var message = $"Can't get data about {airportsRequest.Code} airport";
                 throw new ValidationException(message, new[]
-          {
+                {
                 new ValidationFailure(nameof(AirportRequest), message)
-            });
+                });
             }
 
         

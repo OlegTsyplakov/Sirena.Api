@@ -8,5 +8,6 @@ namespace Sirena.Api.Domain
         public Name Name { get; set; }
         public Longitude Longitude { get; set; }
         public Latitude Latitude { get; set; }
+        public int Frequency { get; set; }
     }
 }

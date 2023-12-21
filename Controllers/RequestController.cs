@@ -19,12 +19,12 @@ namespace Sirena.Api.Controllers
     public class RequestController : ControllerBase
     {
         private readonly IRequestService _requestService;
+        private readonly ICacheService _cacheService;
 
-
-        public RequestController(IRequestService requestService)
+        public RequestController(IRequestService requestService, ICacheService cacheService)
         {
             _requestService = requestService;
-
+            _cacheService = cacheService;
         }
 
 
@@ -41,8 +41,14 @@ namespace Sirena.Api.Controllers
                 new ValidationFailure(nameof(AirportRequest), message)
                 });
             }
-            var airport = new AirportRequest() { Code = code };
-            return await _requestService.GetAirport(airport);
+            if (_cacheService.Contains(code))
+            {
+                return _cacheService.Get(code);
+            }
+            var airportRequest = new AirportRequest() { Code = code };
+            var airport = await _requestService.GetAirport(airportRequest);
+            _cacheService.Add(airport);
+            return airport;
         }
         [HttpPost("miles")]
 

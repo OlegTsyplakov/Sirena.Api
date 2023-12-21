@@ -44,6 +44,7 @@ namespace Sirena.Api
 
 
             });
+            services.AddSingleton<ICacheService>(cache => new CacheService(Configuration.GetValue<int>("CacheLimit")));
             services.AddHttpClient<IRequestService, RequestService>(client =>
             {
                 client.BaseAddress = new Uri(Configuration.GetValue<string>("Url"));
