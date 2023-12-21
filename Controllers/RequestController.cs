@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Sirena.Api.Contracts.Requests;
 using Sirena.Api.Contracts.Responses;
@@ -26,10 +28,20 @@ namespace Sirena.Api.Controllers
         }
 
 
-        [HttpPost("airport")]
-
-        public async Task<Airport> Airport([FromBody] AirportRequest airport)
+        //[HttpPost("airport")]
+        [HttpGet("airport/{code}")]
+        public async Task<Airport> Airport(string code)
         {
+            code = code.ToUpper();
+            if (code.Length != 3)
+            {
+                var message = $"Airport code {code} is not 3 letters";
+                throw new ValidationException(message, new[]
+                {     
+                new ValidationFailure(nameof(AirportRequest), message)
+                });
+            }
+            var airport = new AirportRequest() { Code = code };
             return await _requestService.GetAirport(airport);
         }
         [HttpPost("miles")]

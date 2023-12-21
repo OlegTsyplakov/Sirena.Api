@@ -26,6 +26,7 @@ namespace Sirena.Api.Services
 
             try
             {
+                
                 var responseString = await _httpClient.GetStringAsync(airportsRequest.Code);
                 var airportResponse = JsonConvert.DeserializeObject<AirportResponse>(responseString);
                 var airport = AirportResponseToDomainMapper.ToAirport(airportResponse);
