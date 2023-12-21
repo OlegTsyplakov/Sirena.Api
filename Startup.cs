@@ -3,19 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using NJsonSchema.Generation;
-using NSwag.AspNetCore;
+
 using Sirena.Api.Domain.Services;
 using Sirena.Api.Services;
 using Sirena.Api.Validation;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Sirena.Api
 {
@@ -48,7 +40,9 @@ namespace Sirena.Api
             services.AddHttpClient<IRequestService, RequestService>(client =>
             {
                 client.BaseAddress = new Uri(Configuration.GetValue<string>("Url"));
-            }); 
+            });
+           
+
             services.AddApiVersioning(o => {
                 o.ReportApiVersions = true;
                 o.AssumeDefaultVersionWhenUnspecified = true;
@@ -70,5 +64,9 @@ namespace Sirena.Api
             app.UseOpenApi();
             app.UseSwaggerUi3();
         }
+
+    
+
+
     }
 }

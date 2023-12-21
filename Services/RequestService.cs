@@ -7,7 +7,6 @@ using Sirena.Api.Domain;
 using Sirena.Api.Domain.Services;
 using Sirena.Api.Mapping;
 using System;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -27,7 +26,7 @@ namespace Sirena.Api.Services
             try
             {
                 
-                var responseString = await _httpClient.GetStringAsync(airportsRequest.Code);
+                var responseString = await _httpClient.GetStringAsync(airportsRequest.Code.ToUpper());
                 var airportResponse = JsonConvert.DeserializeObject<AirportResponse>(responseString);
                 var airport = AirportResponseToDomainMapper.ToAirport(airportResponse);
              
