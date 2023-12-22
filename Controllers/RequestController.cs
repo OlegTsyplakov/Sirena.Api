@@ -30,7 +30,7 @@ namespace Sirena.Api.Controllers
             var airportRequest = new AirportRequest() { Code = code };
 
             AirportRequestValidator validator = new AirportRequestValidator();
-            validator.ValidateAndThrow(airportRequest);
+           await validator.ValidateAndThrowAsync(airportRequest);
 
             return await _requestService.GetAirport(airportRequest);  
         }

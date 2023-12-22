@@ -39,8 +39,7 @@ namespace Sirena.Api.Services
                 var airportResponse = JsonConvert.DeserializeObject<AirportResponse>(responseString);
 
                 AirportResponseValidator validator = new AirportResponseValidator();
-
-                validator.ValidateAndThrow(airportResponse);
+                await validator.ValidateAndThrowAsync(airportResponse);
 
 
                 var airport = AirportResponseToDomainMapper.ToAirport(airportResponse);
@@ -69,13 +68,23 @@ namespace Sirena.Api.Services
         public async Task<KilometersResponse> GetKilometers(AirportsRequest airportsRequest)
         {
             (Airport origin, Airport destination) = await GetOriginDestination(airportsRequest);
-            return new KilometersResponse { Kilometers = Helpers.Distance.CalculateKilometers(origin, destination) };
+            var kilometersResponse = new KilometersResponse { Kilometers = Helpers.Distance.CalculateKilometers(origin, destination) };
+
+            KilometersValidator validator = new KilometersValidator();
+            await validator.ValidateAndThrowAsync(kilometersResponse);
+
+            return kilometersResponse;
         }
 
         public async Task<MilesResponse> GetMiles(AirportsRequest airportsRequest)
         {
             (Airport origin, Airport destination) = await GetOriginDestination(airportsRequest);
-            return new MilesResponse { Miles=Helpers.Distance.CalculateMiles(origin, destination) };
+            var milesResponse = new MilesResponse { Miles = Helpers.Distance.CalculateMiles(origin, destination) };
+            
+            MilesValidator validator = new MilesValidator();
+            await validator.ValidateAndThrowAsync(milesResponse);
+
+            return milesResponse;
         }
 
        async Task<Tuple<Airport, Airport>> GetOriginDestination(AirportsRequest airportsRequest)
