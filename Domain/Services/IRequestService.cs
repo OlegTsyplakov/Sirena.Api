@@ -9,5 +9,6 @@ namespace Sirena.Api.Domain.Services
        Task<Airport> GetAirport(AirportRequest airport);
        Task<MilesResponse> GetMiles(AirportsRequest airports);
        Task<KilometersResponse> GetKilometers(AirportsRequest airports);
+       Task ValidateAirportRequest(AirportRequest airportRequest);
     }
 }

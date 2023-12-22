@@ -29,8 +29,7 @@ public class RequestController : ControllerBase
     {
         var airportRequest = new AirportRequest() { Code = code };
 
-        AirportRequestValidator validator = new AirportRequestValidator();
-        await validator.ValidateAndThrowAsync(airportRequest);
+        await _requestService.ValidateAirportRequest(airportRequest);
 
         return await _requestService.GetAirport(airportRequest);  
     }

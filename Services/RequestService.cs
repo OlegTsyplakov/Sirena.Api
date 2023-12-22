@@ -32,28 +32,25 @@ public class RequestService : IRequestService
             return _cacheService.Get(code);
         }
 
-            var data = await GetAirportData(code);
-            var airportResponse = DeserializeAirportResponse(data);
+        var data = await GetAirportData(code);
+        var airportResponse = DeserializeAirportResponse(data);
 
-        try
-        {
-                
-            AirportResponseValidator validator = new AirportResponseValidator();
-            await validator.ValidateAndThrowAsync(airportResponse);
+        await ValidateAirportResponse(airportResponse);
+        var airport = AirportResponseToDomainMapper.ToAirport(airportResponse);
+        _cacheService.Add(airport);
+        return airport;
 
+    }
+    public async Task ValidateAirportRequest(AirportRequest airportRequest)
+    {
+        AirportRequestValidator validator = new AirportRequestValidator();
+        await validator.ValidateAndThrowAsync(airportRequest);
+    }
 
-            var airport = AirportResponseToDomainMapper.ToAirport(airportResponse);
-            _cacheService.Add(airport);
-            return airport;
-        }
-        catch (ValidationException e)
-        {
-            throw new ValidationException(e.Message, new[]
-            {
-            new ValidationFailure(nameof(AirportResponse), e.Message)
-            });
-        }
-
+    async Task ValidateAirportResponse(AirportResponse airportResponse)
+    {
+        AirportResponseValidator validator = new AirportResponseValidator();
+        await validator.ValidateAndThrowAsync(airportResponse);
     }
     async Task<string> GetAirportData(string code)
     {
