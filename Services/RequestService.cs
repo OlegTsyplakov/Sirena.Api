@@ -34,6 +34,7 @@ public class RequestService : IRequestService
 
             var data = await GetAirportData(code);
             var airportResponse = DeserializeAirportResponse(data);
+
         try
         {
                 
@@ -54,34 +55,34 @@ public class RequestService : IRequestService
         }
 
     }
-        async Task<string> GetAirportData(string code)
+    async Task<string> GetAirportData(string code)
+    {
+        try
         {
-            try
-            {
-                return await _httpClient.GetStringAsync(code);
-            }
-            catch (HttpRequestException e)
-            {
-                throw new ValidationException(e.Message, new[]
-                {
-                new ValidationFailure(nameof(AirportRequest),$"{e.Message} On airport code {code}"  )
-                });
-            }
+            return await _httpClient.GetStringAsync(code);
         }
-        AirportResponse DeserializeAirportResponse(string data)
+        catch (HttpRequestException e)
         {
-            try
+            throw new ValidationException(e.Message, new[]
             {
-                return JsonConvert.DeserializeObject<AirportResponse>(data);
-            }
-            catch (JsonReaderException e)
-            {
-                throw new ValidationException(e.Message, new[]
-                {
-                new ValidationFailure(nameof(AirportResponse),e.Message)
-                });
-            }
+            new ValidationFailure(nameof(AirportRequest),$"{e.Message} On airport code {code}"  )
+            });
         }
+    }
+    AirportResponse DeserializeAirportResponse(string data)
+    {
+        try
+        {
+            return JsonConvert.DeserializeObject<AirportResponse>(data);
+        }
+        catch (JsonReaderException e)
+        {
+            throw new ValidationException(e.Message, new[]
+            {
+            new ValidationFailure(nameof(AirportResponse),e.Message)
+            });
+        }
+    }
     public async Task<KilometersResponse> GetKilometers(AirportsRequest airportsRequest)
     {
         (Airport origin, Airport destination) = await GetOriginDestination(airportsRequest);
