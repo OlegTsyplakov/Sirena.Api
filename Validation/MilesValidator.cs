@@ -7,7 +7,7 @@ namespace Sirena.Api.Validation
     {
         public MilesValidator()
         {
-            RuleFor(x => x.Miles).Must(y => y > 0);
+            RuleFor(x => x.Miles).Must(y => y > 0).WithMessage("Miles shoud be greater than 0.");
         }
     }
 }

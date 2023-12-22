@@ -7,7 +7,7 @@ namespace Sirena.Api.Validation
     {
         public KilometersValidator()
         {
-            RuleFor(x => x.Kilometers).Must(y => y > 0);
+            RuleFor(x => x.Kilometers).Must(y => y > 0).WithMessage("Kilometers shoud be greater than 0.");
         }
     }
 }

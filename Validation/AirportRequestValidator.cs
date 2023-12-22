@@ -7,7 +7,7 @@ namespace Sirena.Api.Validation
     {
         public AirportRequestValidator()
         {
-            RuleFor(x => x.Code).NotEmpty().NotNull().Must(y=>y.Length==3);
+            RuleFor(x => x.Code).NotEmpty().NotNull().Must(y=>y.Length==3).WithMessage("Airport code should be 3 letters.");
         }
     }
 }

@@ -8,10 +8,10 @@ namespace Sirena.Api.Validation
 
         public AirportResponseValidator()
         {
-            RuleFor(x => x.Iata).NotEmpty();
-            RuleFor(x => x.Name).NotEmpty();
-            RuleFor(x => x.Location.Longitude).NotEmpty();
-            RuleFor(x => x.Location.Latitude).NotEmpty();
+            RuleFor(x => x.Iata).NotEmpty().WithMessage("Iata code should not be empty.");
+            RuleFor(x => x.Name).NotEmpty().WithMessage("Airport name should not be empty.");
+            RuleFor(x => x.Location.Longitude).NotEmpty().WithMessage("Longitude should not be empty.");
+            RuleFor(x => x.Location.Latitude).NotEmpty().WithMessage("Latitude should not be empty.");
         }
 
     }
