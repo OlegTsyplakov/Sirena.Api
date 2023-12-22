@@ -1,10 +1,8 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Sirena.Api.Contracts.Requests;
 using Sirena.Api.Contracts.Responses;
 using Sirena.Api.Domain;
 using Sirena.Api.Domain.Services;
-using Sirena.Api.Validation;
 using System.Threading.Tasks;
 
 namespace Sirena.Api.Controllers
