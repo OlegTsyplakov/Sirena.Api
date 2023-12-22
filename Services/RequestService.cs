@@ -32,12 +32,11 @@ public class RequestService : IRequestService
             return _cacheService.Get(code);
         }
 
+            var data = await GetAirportData(code);
+            var airportResponse = DeserializeAirportResponse(data);
         try
         {
                 
-            var responseString = await _httpClient.GetStringAsync(code);
-            var airportResponse = JsonConvert.DeserializeObject<AirportResponse>(responseString);
-
             AirportResponseValidator validator = new AirportResponseValidator();
             await validator.ValidateAndThrowAsync(airportResponse);
 
@@ -53,18 +52,36 @@ public class RequestService : IRequestService
             new ValidationFailure(nameof(AirportResponse), e.Message)
             });
         }
-        catch (Exception e)
-        {
-            var message = $"Can't get data about {code} airport";
-            throw new ValidationException(message, new[]
-            {
-            new ValidationFailure(nameof(AirportRequest), message)
-            });
-        }
-
 
     }
-
+        async Task<string> GetAirportData(string code)
+        {
+            try
+            {
+                return await _httpClient.GetStringAsync(code);
+            }
+            catch (HttpRequestException e)
+            {
+                throw new ValidationException(e.Message, new[]
+                {
+                new ValidationFailure(nameof(AirportRequest),$"{e.Message} On airport code {code}"  )
+                });
+            }
+        }
+        AirportResponse DeserializeAirportResponse(string data)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<AirportResponse>(data);
+            }
+            catch (JsonReaderException e)
+            {
+                throw new ValidationException(e.Message, new[]
+                {
+                new ValidationFailure(nameof(AirportResponse),e.Message)
+                });
+            }
+        }
     public async Task<KilometersResponse> GetKilometers(AirportsRequest airportsRequest)
     {
         (Airport origin, Airport destination) = await GetOriginDestination(airportsRequest);
