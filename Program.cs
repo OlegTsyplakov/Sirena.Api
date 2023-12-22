@@ -21,6 +21,6 @@ namespace Sirena.Api
                 config.AddJsonFile(
                     "appsettings.json", optional: true, reloadOnChange: true);
             })
-                .UseStartup<Startup>();
+            .UseStartup<Startup>();
     }
 }

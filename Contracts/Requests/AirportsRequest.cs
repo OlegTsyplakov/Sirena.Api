@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace Sirena.Api.Contracts.Requests
 {
     public class AirportsRequest

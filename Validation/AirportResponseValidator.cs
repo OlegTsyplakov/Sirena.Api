@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Sirena.Api.Contracts.Responses;
-using Sirena.Api.Domain;
 
 namespace Sirena.Api.Validation
 {

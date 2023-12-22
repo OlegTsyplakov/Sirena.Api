@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using System;
 using ValueOf;
 
 namespace Sirena.Api.Domain.Common

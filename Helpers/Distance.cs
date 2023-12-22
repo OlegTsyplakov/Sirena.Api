@@ -17,7 +17,7 @@ namespace Sirena.Api.Helpers
                 (Math.Cos(ConvertDegreesToRadians(origin.Latitude.Value)) * Math.Cos(ConvertDegreesToRadians(destination.Latitude.Value))) * 
                 (Math.Cos(ConvertDegreesToRadians(destination.Longitude.Value) - ConvertDegreesToRadians(origin.Longitude.Value)))) * 6371;
         }
-        public static double ConvertDegreesToRadians(double degrees)
+        static double ConvertDegreesToRadians(double degrees)
         {
             return (Math.PI / 180) * degrees;
         }

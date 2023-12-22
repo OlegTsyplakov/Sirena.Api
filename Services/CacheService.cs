@@ -1,10 +1,8 @@
-﻿
-using Sirena.Api.Domain;
+﻿using Sirena.Api.Domain;
 using Sirena.Api.Domain.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Sirena.Api.Services
 {
