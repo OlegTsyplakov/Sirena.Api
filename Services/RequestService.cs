@@ -111,6 +111,7 @@ public class RequestService : IRequestService
         var destination = GetAirport(airportsRequest.Destination);
 
         await Task.WhenAll(origin, destination);
+
         return Tuple.Create(origin.Result, destination.Result);
     }
 }
