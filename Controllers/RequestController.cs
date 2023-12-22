@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Sirena.Api.Contracts.Requests;
 using Sirena.Api.Contracts.Responses;
 using Sirena.Api.Domain;
 using Sirena.Api.Domain.Services;
+using Sirena.Api.Validation;
 using System.Threading.Tasks;
 
 namespace Sirena.Api.Controllers
@@ -17,35 +17,22 @@ namespace Sirena.Api.Controllers
     public class RequestController : ControllerBase
     {
         private readonly IRequestService _requestService;
-        private readonly ICacheService _cacheService;
 
-        public RequestController(IRequestService requestService, ICacheService cacheService)
+        public RequestController(IRequestService requestService)
         {
             _requestService = requestService;
-            _cacheService = cacheService;
         }
 
 
         [HttpGet("airport/{code}")]
         public async Task<Airport> Airport(string code)
         {
-            code = code.ToUpper();
-            if (code.Length != 3)
-            {
-                var message = $"Airport code {code} is not 3 letters";
-                throw new ValidationException(message, new[]
-                {     
-                new ValidationFailure(nameof(AirportRequest), message)
-                });
-            }
-            if (_cacheService.Contains(code))
-            {
-                return _cacheService.Get(code);
-            }
             var airportRequest = new AirportRequest() { Code = code };
-            var airport = await _requestService.GetAirport(airportRequest);
-            _cacheService.Add(airport);
-            return airport;
+
+            AirportRequestValidator validator = new AirportRequestValidator();
+            validator.ValidateAndThrow(airportRequest);
+
+            return await _requestService.GetAirport(airportRequest);  
         }
         [HttpPost("miles")]
 

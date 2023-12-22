@@ -1,4 +1,5 @@
-﻿namespace Sirena.Api.Contracts.Requests
+﻿
+namespace Sirena.Api.Contracts.Requests
 {
     public class AirportRequest
     {

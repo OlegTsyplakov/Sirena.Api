@@ -6,7 +6,9 @@ using Sirena.Api.Contracts.Responses;
 using Sirena.Api.Domain;
 using Sirena.Api.Domain.Services;
 using Sirena.Api.Mapping;
+using Sirena.Api.Validation;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -15,33 +17,53 @@ namespace Sirena.Api.Services
     public class RequestService : IRequestService
     {
         private readonly HttpClient _httpClient;
-        public RequestService(HttpClient httpClient)
+        private readonly ICacheService _cacheService;
+        public RequestService(HttpClient httpClient, ICacheService cacheService)
         {
             _httpClient = httpClient;
+            _cacheService = cacheService;
         }
         public async Task<Airport> GetAirport(AirportRequest airportsRequest)
         {
-    
+            var code = airportsRequest.Code.ToUpper();
+
+            if (_cacheService.Contains(code))
+            {
+                return _cacheService.Get(code);
+            }
 
             try
             {
                 
-                var responseString = await _httpClient.GetStringAsync(airportsRequest.Code.ToUpper());
+                var responseString = await _httpClient.GetStringAsync(code);
                 var airportResponse = JsonConvert.DeserializeObject<AirportResponse>(responseString);
+
+                AirportResponseValidator validator = new AirportResponseValidator();
+
+                validator.ValidateAndThrow(airportResponse);
+
+
                 var airport = AirportResponseToDomainMapper.ToAirport(airportResponse);
-             
+                _cacheService.Add(airport);
                 return airport;
             }
-            catch (System.Exception)
+            catch (ValidationException e)
             {
-                var message = $"Can't get data about {airportsRequest.Code} airport";
+                throw new ValidationException(e.Message, new[]
+                {
+                new ValidationFailure(nameof(AirportResponse), e.Message)
+                });
+            }
+            catch (Exception e)
+            {
+                var message = $"Can't get data about {code} airport";
                 throw new ValidationException(message, new[]
                 {
                 new ValidationFailure(nameof(AirportRequest), message)
                 });
             }
 
-        
+
         }
 
         public async Task<KilometersResponse> GetKilometers(AirportsRequest airportsRequest)

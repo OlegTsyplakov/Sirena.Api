@@ -4,10 +4,10 @@ using Sirena.Api.Domain;
 
 namespace Sirena.Api.Validation
 {
-    public class GetAirportResponseValidator : AbstractValidator<AirportResponse>
+    public class AirportResponseValidator : AbstractValidator<AirportResponse>
     {
 
-        public GetAirportResponseValidator()
+        public AirportResponseValidator()
         {
             RuleFor(x => x.Iata).NotEmpty();
             RuleFor(x => x.Name).NotEmpty();
