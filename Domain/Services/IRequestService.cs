@@ -6,9 +6,9 @@ namespace Sirena.Api.Domain.Services
 {
     public interface IRequestService
     {
-       Task<Airport> GetAirport(AirportRequest airport);
-       Task<MilesResponse> GetMiles(AirportsRequest airports);
-       Task<KilometersResponse> GetKilometers(AirportsRequest airports);
-       Task ValidateAirportRequest(AirportRequest airportRequest);
+       Task<Airport> GetAirportAsync(AirportRequest airport);
+       Task<MilesResponse> GetMilesAsync(AirportsRequest airports);
+       Task<KilometersResponse> GetKilometersAsync(AirportsRequest airports);
+       Task ValidateAirportRequestAsync(AirportRequest airportRequest);
     }
 }

@@ -27,21 +27,21 @@ public class RequestController : ControllerBase
     {
         var airportRequest = new AirportRequest() { Code = code };
 
-        await _requestService.ValidateAirportRequest(airportRequest);
+        await _requestService.ValidateAirportRequestAsync(airportRequest);
 
-        return await _requestService.GetAirport(airportRequest);  
+        return await _requestService.GetAirportAsync(airportRequest);  
     }
     [HttpPost("miles")]
 
     public async Task<MilesResponse> Miles([FromBody] AirportsRequest airportsRequest)
     {
-        return await _requestService.GetMiles(airportsRequest);
+        return await _requestService.GetMilesAsync(airportsRequest);
     }
     [HttpPost("kilometers")]
 
     public async Task<KilometersResponse> Kilometers([FromBody] AirportsRequest airportsRequest)
     {
-        return await _requestService.GetKilometers(airportsRequest);
+        return await _requestService.GetKilometersAsync(airportsRequest);
     }
 }
 }

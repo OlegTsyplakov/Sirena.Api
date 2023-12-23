@@ -23,7 +23,7 @@ public class RequestService : IRequestService
         _httpClient = httpClient;
         _cacheService = cacheService;
     }
-    public async Task<Airport> GetAirport(AirportRequest airportsRequest)
+    public async Task<Airport> GetAirportAsync(AirportRequest airportsRequest)
     {
         var code = airportsRequest.Code.ToUpper();
 
@@ -32,27 +32,27 @@ public class RequestService : IRequestService
             return _cacheService.Get(code);
         }
 
-        var data = await GetAirportData(code);
+        var data = await GetAirportDataAsync(code);
         var airportResponse = DeserializeAirportResponse(data);
 
-        await ValidateAirportResponse(airportResponse);
+        await ValidateAirportResponseAsync(airportResponse);
         var airport = AirportResponseToDomainMapper.ToAirport(airportResponse);
         _cacheService.Add(airport);
         return airport;
 
     }
-    public async Task ValidateAirportRequest(AirportRequest airportRequest)
+    public async Task ValidateAirportRequestAsync(AirportRequest airportRequest)
     {
         AirportRequestValidator validator = new AirportRequestValidator();
         await validator.ValidateAndThrowAsync(airportRequest);
     }
 
-    async Task ValidateAirportResponse(AirportResponse airportResponse)
+    async Task ValidateAirportResponseAsync(AirportResponse airportResponse)
     {
         AirportResponseValidator validator = new AirportResponseValidator();
         await validator.ValidateAndThrowAsync(airportResponse);
     }
-    async Task<string> GetAirportData(string code)
+    async Task<string> GetAirportDataAsync(string code)
     {
         try
         {
@@ -80,9 +80,9 @@ public class RequestService : IRequestService
             });
         }
     }
-    public async Task<KilometersResponse> GetKilometers(AirportsRequest airportsRequest)
+    public async Task<KilometersResponse> GetKilometersAsync(AirportsRequest airportsRequest)
     {
-        (Airport origin, Airport destination) = await GetOriginDestination(airportsRequest);
+        (Airport origin, Airport destination) = await GetOriginDestinationAsync(airportsRequest);
         var kilometersResponse = new KilometersResponse { Kilometers = Helpers.Distance.CalculateKilometers(origin, destination) };
 
         KilometersValidator validator = new KilometersValidator();
@@ -91,9 +91,9 @@ public class RequestService : IRequestService
         return kilometersResponse;
     }
 
-    public async Task<MilesResponse> GetMiles(AirportsRequest airportsRequest)
+    public async Task<MilesResponse> GetMilesAsync(AirportsRequest airportsRequest)
     {
-        (Airport origin, Airport destination) = await GetOriginDestination(airportsRequest);
+        (Airport origin, Airport destination) = await GetOriginDestinationAsync(airportsRequest);
         var milesResponse = new MilesResponse { Miles = Helpers.Distance.CalculateMiles(origin, destination) };
             
         MilesValidator validator = new MilesValidator();
@@ -102,10 +102,10 @@ public class RequestService : IRequestService
         return milesResponse;
     }
 
-    async Task<Tuple<Airport, Airport>> GetOriginDestination(AirportsRequest airportsRequest)
+    async Task<Tuple<Airport, Airport>> GetOriginDestinationAsync(AirportsRequest airportsRequest)
     {
-        var origin = GetAirport(airportsRequest.Origin);
-        var destination = GetAirport(airportsRequest.Destination);
+        var origin = GetAirportAsync(airportsRequest.Origin);
+        var destination = GetAirportAsync(airportsRequest.Destination);
 
         await Task.WhenAll(origin, destination);
 
